@@ -38,7 +38,7 @@ const Stopwatch: NextComponentType = () => {
     }
 
     return () => clearInterval(interval);
-  }, [running]);
+  }, [running, divisor]);
 
   useEffect(() => {
     if (isTimer) {
@@ -121,12 +121,13 @@ const Stopwatch: NextComponentType = () => {
                 meditation
                 <br />
                 <br />
-                Do something else that's productive but easy(clean up your room,
-                life admin, going for a stroll and casually studying, etc).{' '}
-                <br />
+                Do something else that&apos;s productive but easy(clean up your
+                room, life admin, going for a stroll and casually studying,
+                etc). <br />
                 <br />
                 DO NOT spend this time watching YouTube, scrolling through
-                social media, etc.. That's gonna take you out of the flow state.
+                social media, etc... That&apos;s gonna take you out of the flow
+                state.
               </p>
             </div>
           </div>
