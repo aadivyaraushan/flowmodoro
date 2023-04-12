@@ -1,7 +1,6 @@
-import type { NextPage } from 'next';
 import Stopwatch from '../components/Stopwatch';
 import Container from '../components/Container';
-import {useEffect, useRef, useState} from 'react';
+import {useEffect, useState} from 'react';
 import SettingsModal from "../components/SettingsModal";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faGear} from "@fortawesome/free-solid-svg-icons";
@@ -37,8 +36,8 @@ const Home: () => false | JSX.Element = () => {
       domLoaded && <>
         <ColourContext.Provider value={colourState}>
             <Head>
-                { window.matchMedia('(prefers-color-scheme: dark)').matches ? <link rel='icon' href='/favicon-dark.svg'  type='image/svg+xml'/>
-                    : <link rel='icon' href='/favicon-light.svg'  type='image/svg+xml'/>
+                { window.matchMedia('(prefers-color-scheme: dark)').matches ? <link rel='icon' href='/favicon-dark.ico'/>
+                    : <link rel='icon' href='/favicon-light.ico' />
                 }
                 <title>Flowmodoro</title>
             </Head>
