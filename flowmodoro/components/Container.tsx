@@ -5,11 +5,12 @@ type Props = {
 };
 
 const Container: FC<Props> = ({ children }: Props) => {
-  return (
+
+    return (
     <>
-      <div className=' w-screen items-center justify-center flex h-screen'>
-        {children}
-      </div>
+        <div className='bg-white dark:bg-black text-black dark:text-white w-screen items-center justify-center flex h-screen'>
+            {children}
+        </div>
     </>
   );
 };

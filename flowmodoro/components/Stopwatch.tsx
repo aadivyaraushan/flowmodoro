@@ -1,5 +1,4 @@
-import { NextComponentType } from 'next';
-import { useEffect, useRef, useState } from 'react';
+import {useEffect, useRef, useState, FC, RefObject, Dispatch, SetStateAction} from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import { faStop } from '@fortawesome/free-solid-svg-icons';
@@ -7,15 +6,21 @@ import startSfx from '../public/sfx/start.mp3';
 import stopSfx from '../public/sfx/stop.mp3';
 import timerStartSfx from '../public/sfx/timerStart.mp3';
 
-const Stopwatch: NextComponentType = () => {
+type Props = {
+  setTitle: Dispatch<SetStateAction<string>>
+}
+
+const Stopwatch: FC<Props> = ({setTitle}) => {
   const [divisor, setDivisor] = useState(3);
-  const [time, setTime] = useState(0);
+  const [time, setTime] = useState(300);
   const [running, setRunning] = useState(false);
   const [timer, setTimer] = useState(0);
   const [isTimer, setIsTimer] = useState(false);
   const startRef = useRef<HTMLAudioElement>(null);
   const stopRef = useRef<HTMLAudioElement>(null);
   const timerRef = useRef<HTMLAudioElement>(null);
+  const [domLoaded, setDomLoaded] = useState(false);
+
   const start = () => {
     startRef.current?.play();
   };
@@ -26,10 +31,13 @@ const Stopwatch: NextComponentType = () => {
     timerRef.current?.play();
   };
 
+
   useEffect(() => {
-    let interval: ReturnType<typeof setInterval> = setInterval(() => {});
+    let interval = setInterval(() => {});
     if (running) {
-      interval = setInterval(() => setTime((prevTime) => prevTime + 1), 1000);
+      interval = setInterval(() => {
+        setTime((prevTime) => prevTime + 1);
+      }, 1000);
     } else {
       clearInterval(interval);
       setTimer(Math.floor(time / divisor));
@@ -41,11 +49,28 @@ const Stopwatch: NextComponentType = () => {
   }, [running, divisor]);
 
   useEffect(() => {
+    document.title = `Work - ${String(Math.floor(time / 59)).padStart(2, '0')}:${String(time % 60).padStart(2, '0')} | Flowmodoro`;
+    if(isTimer && timer > 0) {
+      document.title = `Break - ${String(Math.floor(timer / 60)).padStart(2, '0')}:${String(timer % 60).padStart(2, '0')} | Flowmodoro`;
+    }
+    else if(time <= 0 && !isTimer) {
+      document.title = 'Flowmodoro';
+    }
+  }, [time, timer])
+
+  useEffect(() => {
+    let interval: ReturnType<typeof setInterval> = setInterval(() => {});
     if (isTimer) {
-      setInterval(() => setTimer((prevTimer) => prevTimer - 1), 1000);
+      interval = setInterval(() => {
+        setTimer((prevTimer) => prevTimer - 1);
+      }, 1000);
     } else {
+      clearInterval(interval);
       setTimer(0);
     }
+
+    return () => clearInterval(interval);
+
   }, [isTimer]);
 
   useEffect(() => {
@@ -54,8 +79,21 @@ const Stopwatch: NextComponentType = () => {
     }
   }, [timer]);
 
+  useEffect(() => {
+    setDomLoaded(true);
+  }, [])
+
+  useEffect(() => {
+    if (Number(localStorage.getItem('divisor')) === 0) {
+      setDivisor(3);
+    } else {
+      setDivisor(Number(localStorage.getItem('divisor')));
+    }
+  }, [divisor])
+
   return (
-    <div className='flex items-center flex-col self-center justify-center h-1/3 '>
+  <>
+    {domLoaded && (<div className='flex items-center flex-col self-center justify-center h-1/3 '>
       {!isTimer && (
         <>
           <div className=' flex flex-row  h-full w-full justify-center'>
@@ -97,6 +135,10 @@ const Stopwatch: NextComponentType = () => {
                 <br />
                 When you feel like your focus is 50% or less, stop the timer and
                 take a break.
+                <br />
+                <br />
+                The break time is calculated by dividing the time you spent by a
+                divisor which you can modify in the settings.
               </p>{' '}
             </div>
           </div>
@@ -136,7 +178,8 @@ const Stopwatch: NextComponentType = () => {
       <audio src={startSfx} ref={startRef} />
       <audio src={stopSfx} ref={stopRef} />
       <audio src={timerStartSfx} ref={timerRef} />
-    </div>
+    </div>) }
+  </>
   );
 };
 
