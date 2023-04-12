@@ -1,9 +1,8 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {faTimes} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {SetStateAction} from "react";
 import {Dispatch} from "react";
-import {useContext} from "react";
 
 type Props = {
     setShowModal: Dispatch<SetStateAction<boolean>>
@@ -36,7 +35,7 @@ function SettingsModal({setShowModal}: Props) {
                         <input type='number' id='divisor' name='divisor' defaultValue={Number(localStorage.getItem('divisor')) === 0 ? 3 : Number(localStorage.getItem('divisor'))} className='bg-zinc-100 dark:bg-zinc-600' onChange={(e) => {
                             localStorage.setItem('divisor', e.target.value);
                         }} />
-                        <p className='text-xs ml-2'>If you set the divisor to 0 it'll automatically be set to the default (3)</p>
+                        <p className='text-xs ml-2'>If you set the divisor to 0 itll automatically be set to the default (3)</p>
                     </div>
                     <div className='w-full flex h-20 justify-center items-center'>
                         <button className='bg-zinc-100 dark:bg-zinc-800 p-3 rounded-xl' onClick={() => window.location.reload()}>Apply</button>
