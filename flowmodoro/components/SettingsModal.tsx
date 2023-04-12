@@ -25,7 +25,7 @@ function SettingsModal({setShowModal}: Props) {
                         <select id='colourPref' name='colour' defaultValue='Pick an option' className='bg-zinc-100 dark:bg-zinc-600' onChange={(e) => {
                             localStorage.setItem('colour', e.target.value);
                         }}>
-                            <option value={null} disabled>Pick an option</option>
+                            <option value={""} disabled>Pick an option</option>
                             <option value='light'>Light</option>
                             <option value='dark'>Dark</option>
                             <option value='system'>System</option>
