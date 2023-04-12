@@ -54,6 +54,7 @@ const Home: () => false | JSX.Element = () => {
                             </button>
                         </div>
                 </Container>
+                <p className='text-xs'>Site icon made by iconfield on The Noun Project. Used under the Creative Commons license.</p>
                 {showModal && (
                     <SettingsModal setShowModal={setShowModal}/>
                 )}
